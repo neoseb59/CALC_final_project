@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  fastapi:
+    build: 
+      context: ./api
+    ports:
+      - "8000:80"
+    restart: on-failure
+    environment:
+      - MODULE_NAME=main
+      - VARIABLE_NAME=app
+      - HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  fastapi_test:
+    build: 
+      context: ./api_stress_test
+    ports:
+      - "8001:80"
+    restart: on-failure
+    environment:
+      - MODULE_NAME=main
+      - VARIABLE_NAME=app
+      - HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      fastapi:
+        condition: service_started
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+        - 5672:5672
+        - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics ping
+      interval: 5s
+      timeout: 15s
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  summerizer_url:
+    build:
+      context: ./worker_url
+    restart: always
+    environment:
+      - HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    deploy:
+      replicas: 2
+
+  summerizer_text:
+    build:
+      context: ./worker_text
+    restart: always
+    environment:
+      - HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    deploy:
+      replicas: 2
