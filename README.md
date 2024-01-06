@@ -53,7 +53,7 @@ flowchart LR
 
 Cette architecture permet de mettre autant de worker que nécessaire, tout en fiabilisant la communication entre l'api et les workers.
 
-La réponse est obtenu grâce à un correlation id, et une queue qui est crée par l'API, et qui est écoutée de manière asynchrone, pour éviter que l'API ne prenne plus de requête.
+La réponse est obtenue grâce à un correlation id, et une queue qui est créée par l'API, et qui est écoutée de manière asynchrone, pour éviter que l'API ne prenne plus de requêtes.
 
 ## Installation
 
