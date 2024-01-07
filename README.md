@@ -68,3 +68,14 @@ Vous verrez dans le terminal l'ensemble des services automatiquement connectés.
 ## Résultat
 
 On remarque que le découplage permet non seulement d'être indépendant sur le worker, ce qui améliore la maintenabilité du logiciel, mais aussi de traiter plusieurs requêtes en simultané.
+
+## Config
+
+Accès rabbitmq http://localhost:15672 :
+
+-   username: guest
+-   password: guest
+
+Accès API principal: http://localhost:8000/docs
+
+Accès API de test de charge: http://localhost:8001/docs
